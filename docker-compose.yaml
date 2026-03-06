@@ -32,8 +32,9 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     # Verifica se o MySQL está pronto para receber conexões
+      # Verifica se o MySQL está pronto para receber conexões
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-root_secret}"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD || exit 1"]
       interval: 10s      # Verifica a cada 10 segundos
       timeout: 5s         # Timeout de 5 segundos por verificação
       retries: 5          # Tenta 5 vezes antes de considerar unhealthy
